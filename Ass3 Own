@@ -39,7 +39,6 @@ def decrypt_message(encrypted_message):
             i += 1
     return decrypted_message
 
-# Main function
 def main():
     message = input("Enter a message to encrypt: ")
     # Encrypt the message using the Polybius cipher
