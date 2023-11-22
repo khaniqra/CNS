@@ -1,0 +1,16 @@
+import hashlib
+
+def sha1(message):
+  sha1_hash = hashlib.sha1(message.encode()).hexdigest()
+  return sha1_hash
+
+
+def main():
+  message = input("Enter the message to be hashed: ")
+  hash_value = sha1(message)
+  print("SHA-1 Hash of the message:", hash_value)
+  print("Original message: ", message)
+
+
+if __name__ == "__main__":
+  main()
