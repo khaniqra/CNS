@@ -1,0 +1,18 @@
+import cv2
+from numpy import random
+
+demo = cv2.imread("image.jpg")
+r, c, t = demo.shape
+
+#Create random key
+key = random.randint(256, size = (r, c, t))
+
+#Encryption
+enc = demo ^ key
+
+#decryption
+dec = enc ^ key
+cv2.imwrite("encrypted.jpg", enc)
+cv2.imwrite("decrypted.jpg", dec)
+cv2.imwrite("key.png", key)
+
