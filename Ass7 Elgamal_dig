@@ -1,0 +1,47 @@
+import hashlib
+import random
+
+def sha256_hash(message):
+    sha256 = hashlib.sha256()
+    sha256.update(message.encode('utf-8'))
+    return int(sha256.hexdigest(), 16)
+
+def elgamal_sign(message, private_key, p, g):
+    hashed_message = sha256_hash(message)
+    k = 11495
+    r = pow(g, k, p)
+    k_inverse = pow(k, -1, p - 1)
+    s = (hashed_message - private_key * r) * k_inverse % (p - 1)
+    return (r, s)
+
+def elgamal_verify(message, signature, public_key, p, g):
+    r, s = signature
+    if not (0 < r < p and 0 < s < p - 1):
+        return False
+    
+    hashed_message = sha256_hash(message)
+    v1 = pow(g, hashed_message, p)
+    v2 = (pow(public_key, r, p) * pow(r, s, p)) % p
+
+
+    print("g^H(M) = ", end="")
+    print(v1)
+    print("(public key)^r * r^s = ", end="")
+    print(v2)
+    return v1 == v2
+
+p = 743
+g = 350
+private_key = 6
+public_key = pow(g, private_key, p)
+
+message = input("Enter a message to sign: ")
+
+signature = elgamal_sign(message, private_key, p, g)
+print("Digital Signature (r, s):", signature)
+
+is_valid = elgamal_verify(message, signature, public_key, p, g)
+if is_valid:
+    print("Signature is valid.")
+else:
+    print("Signature is not valid.")
